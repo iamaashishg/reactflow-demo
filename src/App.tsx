@@ -1,26 +1,66 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useState } from "react";
+import ReactFlow, {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+  Background,
+  NodeChange,
+  EdgeChange,
+  Connection,
+} from "react-flow-renderer";
 
-function App() {
+import initialNodes from "./nodes";
+import initialEdges from "./edges";
+import BlockNode from "./Block";
+import Startnode from "./start";
+
+const nodeTypes = {
+  custom: BlockNode,
+  start: Startnode,
+};
+
+const rfStyle = {
+  backgroundColor: "#E5E5E5",
+};
+
+function Flow() {
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
+
+  const onNodesChange = useCallback(
+    (changes: NodeChange[]) =>
+      setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes]
+  );
+  // const onEdgesChange = useCallback(
+  //   (changes: EdgeChange[]) =>
+  //     setEdges((eds) => applyEdgeChanges(changes, eds)),
+  //   [setEdges]
+  // );
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      // setEdges((eds) => addEdge(connection, eds))
+    },
+    [setEdges]
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ height: 800 }}>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        // onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        onConnect={onConnect}
+        fitView
+        style={rfStyle}
+        attributionPosition="top-right"
+      >
+        <Background />
+      </ReactFlow>
     </div>
   );
 }
 
-export default App;
+export default Flow;

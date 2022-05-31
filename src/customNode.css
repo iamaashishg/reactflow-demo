@@ -1,0 +1,20 @@
+.text-updater-node {
+  /* height: 30px; */
+  border: 1px solid rgb(15, 15, 15);
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+
+.text-updater-node label {
+  display: block;
+  /* position: relative; */
+  border: 1px solid rgb(15, 15, 15);
+  /* padding: 5px; */
+  border-radius: 2px;
+  background: rgb(44, 154, 173);
+  color: rgb(204, 236, 18);
+  font-size: 10px;
+  text-align: center;
+  cursor: "pointer";
+}
