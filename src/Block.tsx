@@ -52,6 +52,7 @@ function BlockNode() {
         //   border: "none",
         // }}
       />
+
       <div className="text-updater-node">
         <DragDropContext
           onDragEnd={(result) => onDragEnd(result, blocks, setBlocks)}
@@ -97,27 +98,27 @@ function BlockNode() {
                                         //   ? "#000"
                                         //   : "#fff",
                                       }}
+                                      id={`id1${index}`}
+                                      key={`id1${index}`}
                                     >
                                       <div
                                         style={{
                                           margin: "8px",
+                                          position: "relative",
                                         }}
-                                        id="id1"
+                                        id={`id2${index}`}
+                                        key={`id2${index}`}
                                       >
                                         <label htmlFor="text">
                                           {item.content}
                                         </label>
                                         <Handle
                                           type="source"
-                                          position={Position.Bottom}
-                                          id="id1"
+                                          position={Position.Right}
+                                          id={`cn1${index}`}
+                                          key={`cn1${index}`}
                                         />
                                       </div>
-                                      {/* <Handle
-                                        type="source"
-                                        position={Position.Right}
-                                        id="id1"
-                                      /> */}
                                     </div>
                                   </>
                                 );

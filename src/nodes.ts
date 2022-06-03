@@ -39,7 +39,7 @@ const nodes: Node[] = [
       width: 170,
       // height: 100,
     },
-    draggable: false,
+    draggable: true,
   },
   {
     id: "B",
@@ -85,11 +85,11 @@ const nodes: Node[] = [
     // },
   },
   // {
-  //   id: "D",
+  //   id: "id10",
   //   type: "custom",
-  //   data: { label: "Block" },
+  //   data: { label: "child" },
   //   position: { x: 10, y: 110 },
-  //   parentNode: "A",
+  //   parentNode: "E",
   //   extent: "parent",
   // },
 ];

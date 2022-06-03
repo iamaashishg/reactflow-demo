@@ -1,4 +1,4 @@
-import { MarkerType } from "react-flow-renderer";
+import { MarkerType, Edge } from "react-flow-renderer";
 
 export default [
   {
@@ -12,7 +12,9 @@ export default [
   {
     id: "e-b",
     source: "E",
+    sourceHandle: "cn10",
     target: "B",
+    // targetHandle: "B",
     markerEnd: {
       type: MarkerType.Arrow,
     },
