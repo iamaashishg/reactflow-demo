@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import ReactFlow, {
   addEdge,
   applyEdgeChanges,
@@ -7,14 +7,18 @@ import ReactFlow, {
   NodeChange,
   EdgeChange,
   Connection,
+  Edge,
+  Node,
 } from "react-flow-renderer";
 
 import initialNodes from "./nodes";
 import initialEdges from "./edges";
 import BlockNode from "./Block";
 import Startnode from "./start";
+import TestNode from "./TestNode";
 
 const nodeTypes = {
+  //test: TestNode,
   custom: BlockNode,
   start: Startnode,
 };
@@ -25,7 +29,8 @@ const rfStyle = {
 
 function Flow() {
   const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [tempRemovedEdge, setTempRemovedEdge] = useState<Edge | null>(null);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
@@ -44,6 +49,23 @@ function Flow() {
     [setEdges]
   );
 
+  const onClickEdge = (e: React.MouseEvent, edge: Edge) => {
+    console.log("edge");
+    console.log(edge);
+    setTempRemovedEdge(edge);
+    //const oldEdgesList = edges;
+    const newEdgesList = edges.filter((ed) => edge.id !== ed.id);
+    console.log(newEdgesList);
+    setEdges(newEdgesList);
+    //setEdges(oldEdgesList);
+  };
+
+  const onClickNode = (e: React.MouseEvent, node: Node) => {
+    console.log("node");
+    console.log(node);
+    if (tempRemovedEdge !== null) setEdges((old) => [...old, tempRemovedEdge]);
+  };
+
   return (
     <div style={{ height: 800 }}>
       <ReactFlow
@@ -56,6 +78,8 @@ function Flow() {
         fitView
         style={rfStyle}
         attributionPosition="top-right"
+        onEdgeClick={onClickEdge}
+        onNodeClick={onClickNode}
       >
         <Background />
       </ReactFlow>

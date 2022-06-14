@@ -33,13 +33,57 @@ const nodes: Node[] = [
   {
     id: "E",
     type: "custom",
-    data: { label: "Block" },
+    data: {
+      label: "Block",
+      // duplicate info
+      kids: [
+        {
+          id: "SC1",
+          type: "input",
+          data: { label: "scn1" },
+          position: { x: 0, y: 0 },
+          parentNode: "E",
+          extent: "parent",
+          style: {
+            width: 50,
+            height: 20,
+            fontSize: 8,
+          },
+        },
+        {
+          id: "SC2",
+          type: "input",
+          data: { label: "scn2" },
+          position: { x: 2, y: 40 },
+          parentNode: "E",
+          extent: "parent",
+          style: {
+            width: 50,
+            height: 20,
+            fontSize: 8,
+          },
+        },
+        {
+          id: "SC3",
+          type: "input",
+          data: { label: "scn3" },
+          position: { x: 20, y: 40 },
+          parentNode: "E",
+          extent: "parent",
+          style: {
+            width: 50,
+            height: 20,
+            fontSize: 8,
+          },
+        },
+      ],
+    },
     position: { x: -50, y: -30 },
     style: {
       width: 170,
       // height: 100,
     },
-    draggable: true,
+    draggable: false,
   },
   {
     id: "B",
@@ -92,6 +136,57 @@ const nodes: Node[] = [
   //   parentNode: "E",
   //   extent: "parent",
   // },
+
+  // // duplicate info - kids of NODE E
+  /*{
+    id: "SC1",
+    type: "input",
+    data: { label: "scn1" },
+    position: { x: 0, y: 0 },
+    parentNode: "E",
+    extent: "parent",
+    style: {
+      width: 50,
+      height: 20,
+      fontSize: 8,
+    },
+  },
+  {
+    id: "SC2",
+    type: "input",
+    data: { label: "scn2" },
+    position: { x: 2, y: 40 },
+    parentNode: "E",
+    extent: "parent",
+    style: {
+      width: 50,
+      height: 20,
+      fontSize: 8,
+    },
+  },
+  {
+    id: "SC3",
+    type: "input",
+    data: { label: "scn3" },
+    position: { x: 20, y: 40 },
+    parentNode: "E",
+    extent: "parent",
+    style: {
+      width: 50,
+      height: 20,
+      fontSize: 8,
+    },
+  },*/
+  {
+    id: "T0",
+    type: "test",
+    data: { label: "Test Node 0" },
+    position: { x: 25, y: 60 },
+    style: {
+      fontSize: 8,
+      border: "1px solid blue",
+    },
+  },
 ];
 
 export default nodes;

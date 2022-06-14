@@ -10,13 +10,29 @@ export default [
     },
   },
   {
-    id: "e-b",
+    id: "e-b1",
     source: "E",
-    sourceHandle: "cn10",
+    sourceHandle: "cno1",
     target: "B",
     // targetHandle: "B",
+    label: "fix this",
+    labelBgBorderRadius: 4,
+    labelBgStyle: { fill: "#FFCC00", color: "#fff", fillOpacity: 0.7 },
     markerEnd: {
-      type: MarkerType.Arrow,
+      type: MarkerType.ArrowClosed,
+    },
+  },
+  {
+    id: "e-b2",
+    source: "E",
+    sourceHandle: "cno2",
+    target: "B",
+    // targetHandle: "B",
+    label: "fix this also",
+    labelBgBorderRadius: 4,
+    labelBgStyle: { fill: "#00CCFF", color: "#fff", fillOpacity: 0.7 },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
     },
   },
   {
