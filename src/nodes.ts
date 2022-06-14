@@ -26,8 +26,9 @@ const nodes: Node[] = [
     data: { label: null },
     position: { x: -100, y: 80 },
     style: {
-      width: 170,
+      width: 350,
       height: 100,
+      display: "flex",
     },
   },
   {
@@ -83,7 +84,7 @@ const nodes: Node[] = [
       width: 170,
       // height: 100,
     },
-    draggable: false,
+    draggable: true,
   },
   {
     id: "B",
@@ -95,7 +96,7 @@ const nodes: Node[] = [
   },
   {
     id: "F",
-    type: "input",
+    type: "default",
     data: { label: "child node 2" },
     position: { x: 20, y: 40 },
     parentNode: "A",

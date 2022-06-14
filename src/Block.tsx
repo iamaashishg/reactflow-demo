@@ -102,6 +102,7 @@ function BlockNode() {
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                       ref={provided.innerRef}
+                                      className="nodrag"
                                       style={{
                                         ...provided.draggableProps.style,
                                         top: "auto !important",

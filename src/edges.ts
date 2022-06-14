@@ -26,7 +26,7 @@ export default [
     id: "e-b2",
     source: "E",
     sourceHandle: "cno2",
-    target: "B",
+    target: "F",
     // targetHandle: "B",
     label: "fix this also",
     labelBgBorderRadius: 4,
