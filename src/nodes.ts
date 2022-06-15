@@ -26,7 +26,7 @@ const nodes: Node[] = [
     data: { label: null },
     position: { x: -100, y: 80 },
     style: {
-      width: 350,
+      width: 300,
       height: 100,
       display: "flex",
     },
@@ -91,12 +91,15 @@ const nodes: Node[] = [
     type: "output",
     data: { label: "child node 1" },
     position: { x: 10, y: 20 },
+    style: {
+      width: 120,
+    },
     parentNode: "A",
     extent: "parent",
   },
   {
     id: "F",
-    type: "default",
+    type: "testOne",
     data: { label: "child node 2" },
     position: { x: 20, y: 40 },
     parentNode: "A",
@@ -178,16 +181,16 @@ const nodes: Node[] = [
       fontSize: 8,
     },
   },*/
-  {
-    id: "T0",
-    type: "test",
-    data: { label: "Test Node 0" },
-    position: { x: 25, y: 60 },
-    style: {
-      fontSize: 8,
-      border: "1px solid blue",
-    },
-  },
+  // {
+  //   id: "T0",
+  //   type: "test",
+  //   data: { label: "Test Node 0" },
+  //   position: { x: 25, y: 60 },
+  //   style: {
+  //     fontSize: 8,
+  //     border: "1px solid blue",
+  //   },
+  // },
 ];
 
 export default nodes;

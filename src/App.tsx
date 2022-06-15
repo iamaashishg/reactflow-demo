@@ -16,11 +16,13 @@ import initialEdges from "./edges";
 import BlockNode from "./Block";
 import Startnode from "./start";
 import TestNode from "./TestNode";
+import TestNodeOne from "./PopupMenu";
 
 const nodeTypes = {
   //test: TestNode,
   custom: BlockNode,
   start: Startnode,
+  testOne: TestNodeOne,
 };
 
 const rfStyle = {
