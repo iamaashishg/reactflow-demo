@@ -24,7 +24,9 @@ const nodes: Node[] = [
     id: "A",
     type: "group",
     data: { label: null },
-    position: { x: -100, y: 80 },
+    position: { x: 200, y: 80 },
+    sourcePosition: Position.Top,
+    targetPosition: Position.Bottom,
     style: {
       width: 170,
       height: 100,
@@ -88,18 +90,26 @@ const nodes: Node[] = [
   {
     id: "B",
     type: "output",
-    data: { label: "child node 1" },
+    data: { label: "X1" },
     position: { x: 10, y: 20 },
     parentNode: "A",
     extent: "parent",
+    style: {
+      height: "25px",
+      width: "50px",
+    },
   },
   {
     id: "F",
     type: "input",
-    data: { label: "child node 2" },
-    position: { x: 20, y: 40 },
+    data: { label: "X2" },
+    position: { x: 10, y: 60 },
     parentNode: "A",
     extent: "parent",
+    style: {
+      height: "25px",
+      width: "50px",
+    },
   },
   // {
   //   id: "G",
@@ -116,7 +126,7 @@ const nodes: Node[] = [
     type: "output",
     targetPosition: Position.Left,
     data: { label: "End Node" },
-    position: { x: 180, y: 80 },
+    position: { x: 200, y: 280 },
     // parentNode: "G",
     // extent: "parent",
     style: {
@@ -176,7 +186,7 @@ const nodes: Node[] = [
       height: 20,
       fontSize: 8,
     },
-  },*/
+  },
   {
     id: "T0",
     type: "test",
@@ -186,7 +196,7 @@ const nodes: Node[] = [
       fontSize: 8,
       border: "1px solid blue",
     },
-  },
+  },*/
 ];
 
 export default nodes;

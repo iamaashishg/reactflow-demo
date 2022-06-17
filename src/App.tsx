@@ -16,6 +16,7 @@ import initialEdges from "./edges";
 import BlockNode from "./Block";
 import Startnode from "./start";
 import TestNode from "./TestNode";
+import "./App.css";
 
 const nodeTypes = {
   //test: TestNode,
