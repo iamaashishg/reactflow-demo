@@ -20,6 +20,9 @@ import Startnode from "./start";
 import TestNode from "./TestNode";
 import "./App.css";
 import TestNodeOne from "./PopupMenu";
+import { NodeData } from "./NodeData";
+
+type TestNodeOne = Node<NodeData>;
 
 const nodeTypes = {
   test: TestNode,

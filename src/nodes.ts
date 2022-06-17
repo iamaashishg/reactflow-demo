@@ -112,6 +112,18 @@ const nodes: Node[] = [
       width: "50px",
     },
   },
+  {
+    id: "H",
+    type: "testOne",
+    data: { label: "Test menu node" },
+    position: { x: 90, y: 30 },
+    parentNode: "A",
+    extent: "parent",
+    // style: {
+    //   height: "25px",
+    //   width: "50px",
+    // },
+  },
   // {
   //   id: "G",
   //   type: "group",
