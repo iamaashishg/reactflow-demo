@@ -6,7 +6,7 @@ export default [
     source: "S",
     target: "E",
     markerEnd: {
-      type: MarkerType.Arrow,
+      type: MarkerType.ArrowClosed,
     },
   },
   {
@@ -40,7 +40,7 @@ export default [
     source: "F",
     target: "C",
     markerEnd: {
-      type: MarkerType.Arrow,
+      type: MarkerType.ArrowClosed,
     },
   },
 ];
