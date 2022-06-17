@@ -1,12 +1,18 @@
-import { useRef, useState, useLayoutEffect, useMemo } from "react";
-import { Handle, Position } from "react-flow-renderer";
+import { useRef, useState, useEffect, useLayoutEffect, useMemo } from "react";
+import { Handle, Position, useUpdateNodeInternals } from "react-flow-renderer";
 import "./Testnode.css";
 
 const TestNode = () => {
   const nodeRef = useRef(null);
+  const updateNodeInternals = useUpdateNodeInternals();
   const [sourceHandles, setSourceHandles] = useState<Array<number>>([]);
 
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const nodeId = "T0";
+    updateNodeInternals(nodeId);
+  }, [sourceHandles]);
 
   useLayoutEffect(() => {
     const nodeEl: any = nodeRef.current;

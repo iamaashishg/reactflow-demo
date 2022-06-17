@@ -28,8 +28,9 @@ const nodes: Node[] = [
     sourcePosition: Position.Top,
     targetPosition: Position.Bottom,
     style: {
-      width: 170,
+      width: 300,
       height: 100,
+      display: "flex",
     },
   },
   {
@@ -85,7 +86,7 @@ const nodes: Node[] = [
       width: 170,
       // height: 100,
     },
-    draggable: false,
+    draggable: true,
   },
   {
     id: "B",
@@ -186,17 +187,17 @@ const nodes: Node[] = [
       height: 20,
       fontSize: 8,
     },
-  },
+  },*/
   {
     id: "T0",
     type: "test",
     data: { label: "Test Node 0" },
-    position: { x: 25, y: 60 },
+    position: { x: 25, y: 160 },
     style: {
       fontSize: 8,
       border: "1px solid blue",
     },
-  },*/
+  },
 ];
 
 export default nodes;

@@ -1,7 +1,7 @@
 import { useCallback, memo } from "react";
 
 import { Handle, Position } from "react-flow-renderer";
-import { DragDropContext } from "react-beautiful-dnd";
+// import { DragDropContext } from "react-beautiful-dnd";
 
 import "./customNode.css";
 
@@ -12,11 +12,10 @@ function CustomNode() {
   //     console.log(evt.target.value);
   //   }, []);
   return (
-    <DragDropContext onDragEnd={(result: any) => console.log(result)}>
-      <div className="text-updater-node">
-        <label htmlFor="text">child node 3</label>
-        {/* <input id="text" name="text" onChange={onChange} /> */}
-        {/* <Handle
+    <div className="text-updater-node">
+      <label htmlFor="text">child node 3</label>
+      {/* <input id="text" name="text" onChange={onChange} /> */}
+      {/* <Handle
           type="source"
           position={Position.Bottom}
           id="b"
@@ -24,8 +23,7 @@ function CustomNode() {
             backgroundColor: "#E5E5E5",
           }}
         /> */}
-      </div>
-    </DragDropContext>
+    </div>
   );
 }
 

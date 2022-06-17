@@ -96,12 +96,27 @@ function BlockNode() {
                               index={index}
                             >
                               {(provided, snapshot) => {
+                                // Restrict dragging to vertical axis
+                                let transform = undefined;
+                                if (
+                                  provided &&
+                                  provided.draggableProps &&
+                                  provided.draggableProps.style
+                                )
+                                  transform =
+                                    provided.draggableProps.style.transform;
+                                if (snapshot.isDragging && transform) {
+                                  transform = transform.replace(
+                                    /\(.+\,/,
+                                    "(0,"
+                                  );
+                                }
                                 return (
                                   <>
                                     <div
                                       {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
                                       ref={provided.innerRef}
+                                      className="nodrag"
                                       style={{
                                         ...provided.draggableProps.style,
                                         top: "auto !important",
@@ -112,6 +127,7 @@ function BlockNode() {
                                         // background: snapshot.isDragging
                                         //   ? "#000"
                                         //   : "#fff",
+                                        transform,
                                       }}
                                       id={`id1${index}`}
                                       key={`id1${index}`}
@@ -126,6 +142,7 @@ function BlockNode() {
                                         <label
                                           htmlFor="text"
                                           style={{ margin: "8px" }}
+                                          {...provided.dragHandleProps}
                                         >
                                           {item.content}
                                         </label>
@@ -166,6 +183,7 @@ function BlockNode() {
         </button>
       </div>
       <Handle
+        id="e-source"
         type="source"
         position={Position.Bottom}
         // style={{
