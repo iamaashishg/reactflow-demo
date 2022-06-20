@@ -20,9 +20,9 @@ import Startnode from "./start";
 import TestNode from "./TestNode";
 import "./App.css";
 import TestNodeOne from "./PopupMenu";
-import { NodeData } from "./NodeData";
+// import { NodeData } from "./NodeData";
 
-type TestNodeOne = Node<NodeData>;
+// type TestNodeOne = Node<NodeData>;
 
 const nodeTypes = {
   test: TestNode,
@@ -36,17 +36,17 @@ const rfStyle = {
 };
 
 function Flow() {
-  //const [nodes, setNodes] = useState(initialNodes);
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  //const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [nodes, setNodes] = useState(initialNodes);
+  // const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  // const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [tempRemovedEdge, setTempRemovedEdge] = useState<Edge | null>(null);
 
-  /*const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    [setNodes]
-  );*/
+  // const onNodesChange = useCallback(
+  //   (changes: NodeChange[]) =>
+  //     setNodes((nds) => applyNodeChanges(changes, nds)),
+  //   [setNodes]
+  // );
   // const onEdgesChange = useCallback(
   //   (changes: EdgeChange[]) =>
   //     setEdges((eds) => applyEdgeChanges(changes, eds)),
@@ -83,8 +83,8 @@ function Flow() {
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        // onNodesChange={onNodesChange}
+        // onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         onConnect={onConnect}
         fitView

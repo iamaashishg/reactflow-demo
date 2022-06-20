@@ -115,10 +115,11 @@ const nodes: Node[] = [
   {
     id: "H",
     type: "testOne",
-    data: { label: "Test menu node" },
+    data: { label: "Tester menu node", id: "H" },
     position: { x: 90, y: 30 },
     parentNode: "A",
     extent: "parent",
+    draggable: true,
     // style: {
     //   height: "25px",
     //   width: "50px",

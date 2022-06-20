@@ -12,10 +12,11 @@ import {
 } from "react-flow-renderer";
 import { PopupState as PState } from "material-ui-popup-state/core";
 
-export default function MenuPopupState(data: any) {
+export default function MenuPopupState({ data }: any) {
+  console.log(data);
   const updateNodeInternals = useUpdateNodeInternals();
   const store = useStoreApi();
-  const { nodeInternals, setNodes } = store.getState();
+  const { nodeInternals, setNodes, setEdges, edges } = store.getState();
   const nodes = Array.from(nodeInternals).map(([, node]) => node);
 
   const getNodeId = () => `randomnode_${+new Date()}`;
@@ -28,6 +29,7 @@ export default function MenuPopupState(data: any) {
 
   const onDuplicate = useCallback(
     (popupState: PState) => {
+      console.log("in duplicate");
       const newNode: Node = {
         id: getNodeId(),
         data: { label: "Duplicate node" },
@@ -37,9 +39,13 @@ export default function MenuPopupState(data: any) {
         },
       };
       const sourceNode = nodes.find((n) => n.id === data.id) || newNode;
-      sourceNode.id = getNodeId();
-      const updatedNodes = nodes.concat(sourceNode);
+      let duplicateNode = JSON.parse(JSON.stringify(sourceNode));
+      duplicateNode.id = getNodeId();
+      duplicateNode.position = { x: 50, y: 20 };
+      const updatedNodes = nodes.concat(duplicateNode);
+      console.log("updatedNodes:", updatedNodes);
       setNodes(updatedNodes);
+      // setEdges(edges);
       popupState.close();
     },
     [setNodes]
