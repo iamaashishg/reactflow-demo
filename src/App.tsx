@@ -13,7 +13,13 @@ import ReactFlow, {
   useEdgesState,
 } from "react-flow-renderer";
 
-import initialNodes from "./nodes";
+import { AppState } from "./store";
+
+import { useSelector, useDispatch } from "react-redux";
+
+import { DragDropContext } from "react-beautiful-dnd";
+
+//import initialNodes from "./nodes";
 import initialEdges from "./edges";
 import BlockNode from "./Block";
 import Startnode from "./start";
@@ -23,10 +29,14 @@ import TestNodeOne from "./PopupMenu";
 import { NodeData } from "./NodeData";
 
 type TestNodeOne = Node<NodeData>;
-
+interface Item {
+  id: string;
+  content: string;
+}
 const nodeTypes = {
   test: TestNode,
   custom: BlockNode,
+  custom2: BlockNode,
   start: Startnode,
   testOne: TestNodeOne,
 };
@@ -36,9 +46,11 @@ const rfStyle = {
 };
 
 function Flow() {
+  const dispatch = useDispatch();
   //const [nodes, setNodes] = useState(initialNodes);
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const allNodes = useSelector((state: AppState) => state.nodes);
+  const [nodes, , onNodesChange] = useNodesState(allNodes as Node[]);
+  const [edges, setEdges] = useEdgesState(initialEdges);
   //const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [tempRemovedEdge, setTempRemovedEdge] = useState<Edge | null>(null);
 
@@ -47,16 +59,28 @@ function Flow() {
       setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   );*/
-  // const onEdgesChange = useCallback(
-  //   (changes: EdgeChange[]) =>
-  //     setEdges((eds) => applyEdgeChanges(changes, eds)),
-  //   [setEdges]
-  // );
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange[]) =>
+      setEdges((eds) => {
+        console.log("in set edges 1...");
+        console.log(eds);
+        return applyEdgeChanges(changes, eds);
+      }),
+    [setEdges]
+  );
   const onConnect = useCallback(
     (connection: Connection) => {
       console.log("connection");
       console.log(connection);
-      setEdges((eds) => addEdge(connection, eds));
+      const newconnection = {
+        ...connection,
+        markerEnd: { type: "arrowClosed" },
+      };
+      setEdges((eds) => {
+        console.log("in set edges 2...");
+        console.log(eds);
+        return addEdge(newconnection, eds);
+      });
     },
     [setEdges]
   );
@@ -80,21 +104,35 @@ function Flow() {
 
   return (
     <div style={{ height: 800 }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
-        onConnect={onConnect}
-        fitView
-        style={rfStyle}
-        attributionPosition="top-right"
-        onEdgeClick={onClickEdge}
-        onNodeClick={onClickNode}
+      <DragDropContext
+        onDragEnd={(result) => {
+          dispatch({
+            type: "REARRANGE_KIDS_AFTER_DRAG",
+            payload: {
+              draggableId: result.draggableId,
+              srcIndex: result.source.index,
+              destIndex: result.destination?.index,
+            },
+          });
+        }}
       >
-        <Background />
-      </ReactFlow>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={nodeTypes}
+          onConnect={onConnect}
+          fitView
+          style={rfStyle}
+          attributionPosition="top-right"
+          onEdgeClick={onClickEdge}
+          onNodeClick={onClickNode}
+          //onInit
+        >
+          <Background />
+        </ReactFlow>
+      </DragDropContext>
     </div>
   );
 }

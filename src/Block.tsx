@@ -1,180 +1,119 @@
-import { useCallback, memo, useState } from "react";
-
+import { useState } from "react";
 import {
   Handle,
   Position,
   useUpdateNodeInternals,
   useReactFlow,
-  useStore,
 } from "react-flow-renderer";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import "./customNode.css";
 
-const childItems = [
-  { id: "cno1", content: "child node 10" },
-  { id: "cno2", content: "child node 20" },
-  { id: "cno3", content: "child node 30" },
-];
+interface Item {
+  id: string;
+  content: string;
+}
 
-const block = {
-  [uuidv4()]: {
-    name: "Message",
-    items: childItems,
-  },
-};
-
-function BlockNode() {
-  const updateNodeDimensions = useStore(
-    (actions) => actions.updateNodeDimensions
-  );
+function BlockNode({ data }: any) {
   const updateNodeInternals = useUpdateNodeInternals();
   const reactFlowInstance = useReactFlow();
+
   console.log("reactFlowInstance....");
   console.log(reactFlowInstance.getNodes());
   console.log(reactFlowInstance.getEdges());
-  const [refresh, setRefresh] = useState(0);
-  const onDragEnd = (result: DropResult, blocks: any, setBlocks: any) => {
-    if (!result.destination) return;
-    const { source, destination } = result;
-    const column = blocks[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setBlocks({
-      ...blocks,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    });
-  };
-  const [blocks, setBlocks] = useState(block);
+
+  const [localKids, setLocalKids] = useState(data.kids);
+  const [blockId] = useState(uuidv4());
   return (
     <>
-      <Handle
-        type="target"
-        position={Position.Top}
-        // style={{
-        //   background: "black",
-        //   height: "0.1px",
-        //   width: "0.1px",
-        //   border: "none",
-        // }}
-      />
+      <Handle type="target" position={Position.Top} />
 
       <div className="text-updater-node">
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, blocks, setBlocks)}
-        >
-          {Object.entries(blocks).map(([id, column]) => {
+        <Droppable droppableId={blockId} key={blockId}>
+          {(provided, snapshot) => {
             return (
-              <Droppable droppableId={id} key={id}>
-                {(provided, snapshot) => {
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                style={{
+                  background: snapshot.isDraggingOver ? "lightgrey" : "white",
+                }}
+              >
+                {localKids.map((kid: Item, index: number) => {
+                  console.log("kid id : ", kid.id);
                   return (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      style={{
-                        background: snapshot.isDraggingOver
-                          ? "lightgrey"
-                          : "white",
-                      }}
-                    >
-                      {column.items.map((item, index) => {
+                    <Draggable key={kid.id} draggableId={kid.id} index={index}>
+                      {(provided, snapshot) => {
+                        // Restrict dragging to vertical axis
+                        let transform = undefined;
+                        if (
+                          provided &&
+                          provided.draggableProps &&
+                          provided.draggableProps.style
+                        )
+                          transform = provided.draggableProps.style.transform;
+                        if (snapshot.isDragging && transform) {
+                          transform = transform.replace(/\(.+\,/, "(0,");
+                        }
                         return (
                           <>
-                            {/* <Handle type="source" position={Position.Bottom} /> */}
-                            <Draggable
-                              key={item.id}
-                              draggableId={item.id}
-                              index={index}
-                            >
-                              {(provided, snapshot) => {
-                                // Restrict dragging to vertical axis
-                                let transform = undefined;
-                                if (
-                                  provided &&
-                                  provided.draggableProps &&
-                                  provided.draggableProps.style
-                                )
-                                  transform =
-                                    provided.draggableProps.style.transform;
-                                if (snapshot.isDragging && transform) {
-                                  transform = transform.replace(
-                                    /\(.+\,/,
-                                    "(0,"
-                                  );
-                                }
-                                return (
-                                  <>
-                                    <div
-                                      {...provided.draggableProps}
-                                      ref={provided.innerRef}
-                                      className="nodrag"
-                                      style={{
-                                        ...provided.draggableProps.style,
-                                        top: "auto !important",
-                                        left: "auto !important",
-                                        width: "100%",
-                                        height: "100%",
-                                        cursor: "pointer",
-                                        // background: snapshot.isDragging
-                                        //   ? "#000"
-                                        //   : "#fff",
-                                        transform,
-                                      }}
-                                      id={`id1${index}`}
-                                      key={`id1${index}`}
-                                    >
-                                      <div
-                                        style={{
-                                          position: "relative",
-                                        }}
-                                        id={`id2${index}`}
-                                        key={`id2${index}`}
-                                      >
-                                        <label
-                                          htmlFor="text"
-                                          style={{ margin: "8px" }}
-                                          {...provided.dragHandleProps}
-                                        >
-                                          {item.content}
-                                        </label>
-                                        <Handle
-                                          type="source"
-                                          position={Position.Right}
-                                          id={item.id}
-                                          key={item.id}
-                                        />
-                                      </div>
-                                    </div>
-                                  </>
-                                );
+                            <div
+                              {...provided.draggableProps}
+                              ref={provided.innerRef}
+                              className="nodrag"
+                              style={{
+                                ...provided.draggableProps.style,
+                                top: "auto !important",
+                                left: "auto !important",
+                                width: "100%",
+                                height: "100%",
+                                cursor: "pointer",
+                                // background: snapshot.isDragging
+                                //   ? "#000"
+                                //   : "#fff",
+                                //transform,
                               }}
-                            </Draggable>
+                              id={`id1${index}`}
+                              key={`id1${index}`}
+                            >
+                              <div
+                                style={{
+                                  position: "relative",
+                                }}
+                                id={`id2${index}`}
+                                key={`id2${index}`}
+                              >
+                                <label
+                                  htmlFor="text"
+                                  style={{ margin: "8px" }}
+                                  {...provided.dragHandleProps}
+                                >
+                                  {kid.content}
+                                </label>
+                                <Handle
+                                  type="source"
+                                  position={Position.Right}
+                                  id={kid.id}
+                                  key={kid.id}
+                                />
+                              </div>
+                            </div>
                           </>
                         );
-                      })}
-                      {provided.placeholder}
-                    </div>
+                      }}
+                    </Draggable>
                   );
-                }}
-              </Droppable>
+                })}
+                {provided.placeholder}
+              </div>
             );
-          })}
-        </DragDropContext>
+          }}
+        </Droppable>
         <button
           style={{ fontSize: "8px" }}
           onClick={() => {
             updateNodeInternals("E");
             //reactFlowInstance.setEdges(reactFlowInstance.getEdges());
-            //setRefresh((old) => ++old);
             //updateNodeDimensions([{ id, nodeElement, forceUpdate: true }]);
             // updateNodeDimensions([{ "E", document.querySelector(`.react-flow__node[data-id="E"]`), forceUpdate: true }]);
           }}

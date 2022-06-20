@@ -41,47 +41,48 @@ const nodes: Node[] = [
       // duplicate info
       kids: [
         {
-          id: "SC1",
-          type: "input",
-          data: { label: "scn1" },
-          position: { x: 0, y: 0 },
-          parentNode: "E",
-          extent: "parent",
-          style: {
-            width: 50,
-            height: 20,
-            fontSize: 8,
-          },
+          id: "cno1",
+          content: "child node 1",
         },
         {
-          id: "SC2",
-          type: "input",
-          data: { label: "scn2" },
-          position: { x: 2, y: 40 },
-          parentNode: "E",
-          extent: "parent",
-          style: {
-            width: 50,
-            height: 20,
-            fontSize: 8,
-          },
+          id: "cno2",
+          content: "child node 2",
         },
         {
-          id: "SC3",
-          type: "input",
-          data: { label: "scn3" },
-          position: { x: 20, y: 40 },
-          parentNode: "E",
-          extent: "parent",
-          style: {
-            width: 50,
-            height: 20,
-            fontSize: 8,
-          },
+          id: "cno3",
+          content: "child node 3",
         },
       ],
     },
     position: { x: -50, y: -30 },
+    style: {
+      width: 170,
+      // height: 100,
+    },
+    draggable: true,
+  },
+  {
+    id: "E2",
+    type: "custom2",
+    data: {
+      label: "Block2",
+      // duplicate info
+      kids: [
+        {
+          id: "cno12",
+          content: "child node 12",
+        },
+        {
+          id: "cno22",
+          content: "child node 22",
+        },
+        {
+          id: "cno32",
+          content: "child node 32",
+        },
+      ],
+    },
+    position: { x: -50, y: 90 },
     style: {
       width: 170,
       // height: 100,
