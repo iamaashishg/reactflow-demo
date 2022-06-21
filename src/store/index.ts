@@ -1,6 +1,7 @@
 import { createStore } from "redux";
 import { Node, Edge } from "react-flow-renderer";
 import nodes from "../nodes";
+import initialEdges from "../edges";
 
 export interface AppState {
   nodes: Node[] | undefined;
@@ -17,7 +18,7 @@ interface Item {
 const reducerFn = (
   state: AppState = {
     nodes: nodes,
-    edges: undefined,
+    edges: initialEdges,
   },
   action: any
 ) => {
@@ -25,13 +26,21 @@ const reducerFn = (
   switch (type) {
     case "SET_NODES":
       return {
-        nodes: payload,
-        edges: state.edges,
+        ...state,
+        nodes: payload.updatedNodes,
       };
     case "SET_EDGES":
       return {
         nodes: state.nodes,
         edges: payload,
+      };
+    case "DELETE_NODE":
+      const updatedNodes =
+        state.nodes && state.nodes.filter((n) => n.id !== payload.id);
+      console.log("DELETE_NODE: ", updatedNodes);
+      return {
+        ...state,
+        nodes: updatedNodes,
       };
     case "REARRANGE_KIDS_AFTER_DRAG":
       // find the kids

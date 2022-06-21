@@ -16,11 +16,11 @@ interface Item {
 
 function BlockNode({ data }: any) {
   const updateNodeInternals = useUpdateNodeInternals();
-  const reactFlowInstance = useReactFlow();
+  // const reactFlowInstance = useReactFlow();
 
-  console.log("reactFlowInstance....");
-  console.log(reactFlowInstance.getNodes());
-  console.log(reactFlowInstance.getEdges());
+  // console.log("reactFlowInstance....");
+  // console.log(reactFlowInstance.getNodes());
+  // console.log(reactFlowInstance.getEdges());
 
   const [localKids, setLocalKids] = useState(data.kids);
   const [blockId] = useState(uuidv4());
@@ -40,7 +40,7 @@ function BlockNode({ data }: any) {
                 }}
               >
                 {localKids.map((kid: Item, index: number) => {
-                  console.log("kid id : ", kid.id);
+                  // console.log("kid id : ", kid.id);
                   return (
                     <Draggable key={kid.id} draggableId={kid.id} index={index}>
                       {(provided, snapshot) => {
