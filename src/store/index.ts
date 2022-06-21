@@ -62,7 +62,8 @@ const reducerFn = (
         },
       };
       const sourceNode =
-        (nodes && nodes.find((n) => n.id === state.nodeId)) || newNode;
+        (state.nodes && state.nodes.find((n) => n.id === state.nodeId)) ||
+        newNode;
       let duplicateNode = JSON.parse(JSON.stringify(sourceNode));
       duplicateNode.id = getNodeId();
       duplicateNode.position = {
@@ -70,7 +71,7 @@ const reducerFn = (
         y: sourceNode.position.y + 20,
       };
       duplicateNode.data.label = `${sourceNode.data.label} copy`;
-      const allNodes = nodes && nodes.concat(duplicateNode);
+      const allNodes = state.nodes && state.nodes.concat([duplicateNode]);
       console.log("updatedNodes:", allNodes);
       return {
         ...state,
