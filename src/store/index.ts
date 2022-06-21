@@ -87,23 +87,30 @@ const reducerFn = (
         destinationDroppableId,
       } = payload;
       if (state.nodes) {
-        const parentNodeIndex = state.nodes.findIndex((node) => {
-          if (node.data.kids) {
-            return node.data.kids.some((kid: Item) => kid.id === draggableId);
-          }
-          return false;
-        });
-        //console.log("parentNode");
-        //console.log(parentNodeIndex);
-        const parentNode = state.nodes[parentNodeIndex];
-        const copyKids = parentNode.data.kids;
-        [copyKids[srcIndex], copyKids[destIndex]] = [
-          copyKids[destIndex],
-          copyKids[srcIndex],
-        ];
-        parentNode.data.kids = copyKids;
+        const srcParentNodeIndex = state.nodes.findIndex(
+          (node) => node.id === srcDroppableId
+        );
+        const srcParentNode = state.nodes[srcParentNodeIndex];
+        const copySrcKids = srcParentNode.data.kids;
+        // splicing dragged kid from copySrcIndex at srcIndex
+        const draggableKid = copySrcKids.splice(srcIndex, 1)[0];
+        console.log("draggableKid....");
+        console.log(draggableKid);
+        srcParentNode.data.kids = copySrcKids;
+
+        const destParentNodeIndex = state.nodes.findIndex(
+          (node) => node.id === destinationDroppableId
+        );
+        const destParentNode = state.nodes[destParentNodeIndex];
+        const copyDestKids = destParentNode.data.kids;
+        // inserting dragged kid into copyDestKids at destIndex
+        copyDestKids.splice(destIndex, 0, draggableKid);
+        destParentNode.data.kids = copyDestKids;
+
         const copyNodes = [...state.nodes];
-        copyNodes[parentNodeIndex] = parentNode;
+        copyNodes[srcParentNodeIndex] = srcParentNode;
+        copyNodes[destParentNodeIndex] = destParentNode;
+
         return {
           ...state,
           nodes: copyNodes,
