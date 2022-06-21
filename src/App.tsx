@@ -49,16 +49,20 @@ function Flow() {
   const dispatch = useDispatch();
   //const [nodes, setNodes] = useState(initialNodes);
   const allNodes = useSelector((state: AppState) => state.nodes);
-  const [nodes, , onNodesChange] = useNodesState(allNodes as Node[]);
-  const [edges, setEdges] = useEdgesState(initialEdges);
+  const allEdges = useSelector((state: AppState) => state.edges);
+
+  const [nodes, setNodes] = useNodesState(allNodes as Node[]);
+  console.log("App nodes: ", nodes);
+  const [edges, setEdges] = useEdgesState(allEdges as Edge[]);
   //const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [tempRemovedEdge, setTempRemovedEdge] = useState<Edge | null>(null);
 
-  /*const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    [setNodes]
-  );*/
+  const onNodesChange = (changes: NodeChange[]) =>
+    setNodes((nds) => {
+      console.log("in set nodes: ", nds);
+      return applyNodeChanges(changes, nds);
+    });
+
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) =>
       setEdges((eds) => {

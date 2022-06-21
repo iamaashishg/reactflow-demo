@@ -116,7 +116,7 @@ const nodes: Node[] = [
   {
     id: "H",
     type: "testOne",
-    data: { label: "Test menu node" },
+    data: { label: "Test menu", id: "H" },
     position: { x: 90, y: 30 },
     parentNode: "A",
     extent: "parent",
