@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ReactFlow, {
   addEdge,
   applyEdgeChanges,
@@ -48,11 +48,14 @@ const rfStyle = {
 function Flow() {
   const dispatch = useDispatch();
   //const [nodes, setNodes] = useState(initialNodes);
-  const allNodes = useSelector((state: AppState) => state.nodes);
+  const allNodes = useSelector((state: AppState) => state.nodes) as Node[];
   const allEdges = useSelector((state: AppState) => state.edges);
 
-  const [nodes, setNodes] = useNodesState(allNodes as Node[]);
-  console.log("App nodes: ", nodes);
+  useEffect(() => {
+    setNodes(allNodes);
+  }, [allNodes]);
+
+  const [nodes, setNodes] = useNodesState(allNodes);
   const [edges, setEdges] = useEdgesState(allEdges as Edge[]);
   //const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [tempRemovedEdge, setTempRemovedEdge] = useState<Edge | null>(null);
