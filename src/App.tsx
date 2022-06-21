@@ -106,12 +106,16 @@ function Flow() {
     <div style={{ height: 800 }}>
       <DragDropContext
         onDragEnd={(result) => {
+          console.log("result...");
+          console.log(result);
           dispatch({
             type: "REARRANGE_KIDS_AFTER_DRAG",
             payload: {
               draggableId: result.draggableId,
               srcIndex: result.source.index,
+              srcDroppableId: result.source.droppableId,
               destIndex: result.destination?.index,
+              destinationDroppableId: result.destination?.droppableId,
             },
           });
         }}

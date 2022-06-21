@@ -14,7 +14,7 @@ interface Item {
   content: string;
 }
 
-function BlockNode({ data }: any) {
+function BlockNode({ id, data }: any) {
   const updateNodeInternals = useUpdateNodeInternals();
   const reactFlowInstance = useReactFlow();
 
@@ -23,7 +23,7 @@ function BlockNode({ data }: any) {
   console.log(reactFlowInstance.getEdges());
 
   const [localKids, setLocalKids] = useState(data.kids);
-  const [blockId] = useState(uuidv4());
+  const [blockId] = useState(id);
   return (
     <>
       <Handle type="target" position={Position.Top} />

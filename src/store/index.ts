@@ -35,7 +35,13 @@ const reducerFn = (
       };
     case "REARRANGE_KIDS_AFTER_DRAG":
       // find the kids
-      const { draggableId, srcIndex, destIndex } = payload;
+      const {
+        draggableId,
+        srcIndex,
+        destIndex,
+        srcDroppableId,
+        destinationDroppableId,
+      } = payload;
       if (state.nodes) {
         const parentNodeIndex = state.nodes.findIndex((node) => {
           if (node.data.kids) {
