@@ -6,6 +6,7 @@ import initialEdges from "../edges";
 export interface AppState {
   nodes: Node[] | undefined;
   edges: Edge[] | undefined;
+  nodeId: string;
 }
 
 interface Item {
@@ -13,12 +14,15 @@ interface Item {
   content: string;
 }
 
+const getNodeId = () => `randomnode_${+new Date()}`;
+
 // keep the reducer synchronous
 // do not directly mutate the state
 const reducerFn = (
   state: AppState = {
     nodes: nodes,
     edges: initialEdges,
+    nodeId: "",
   },
   action: any
 ) => {
@@ -29,19 +33,50 @@ const reducerFn = (
         ...state,
         nodes: payload.updatedNodes,
       };
+    case "SET_NODE":
+      return {
+        ...state,
+        nodeId: payload.node.id,
+      };
     case "SET_EDGES":
       return {
-        nodes: state.nodes,
+        ...state,
         edges: payload,
       };
     case "DELETE_NODE":
       const updatedNodes =
-        state.nodes && state.nodes.filter((n) => n.id !== payload.id);
+        state.nodes && state.nodes.filter((n) => n.id !== state.nodeId);
       console.log("DELETE_NODE: ", updatedNodes);
       return {
         ...state,
         nodes: updatedNodes,
       };
+
+    case "DUPLICATE_NODE":
+      const newNode: Node = {
+        id: getNodeId(),
+        data: { label: "Duplicate node" },
+        position: {
+          x: Math.random() * window.innerWidth - 100,
+          y: Math.random() * window.innerHeight,
+        },
+      };
+      const sourceNode =
+        (nodes && nodes.find((n) => n.id === state.nodeId)) || newNode;
+      let duplicateNode = JSON.parse(JSON.stringify(sourceNode));
+      duplicateNode.id = getNodeId();
+      duplicateNode.position = {
+        x: sourceNode.position.x + 20,
+        y: sourceNode.position.y + 20,
+      };
+      duplicateNode.data.label = `${sourceNode.data.label} copy`;
+      const allNodes = nodes && nodes.concat(duplicateNode);
+      console.log("updatedNodes:", allNodes);
+      return {
+        ...state,
+        nodes: allNodes,
+      };
+
     case "REARRANGE_KIDS_AFTER_DRAG":
       // find the kids
       const {
@@ -70,8 +105,8 @@ const reducerFn = (
         const copyNodes = [...state.nodes];
         copyNodes[parentNodeIndex] = parentNode;
         return {
+          ...state,
           nodes: copyNodes,
-          edges: state.edges,
         };
       }
       return state;

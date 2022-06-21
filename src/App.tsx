@@ -109,6 +109,11 @@ function Flow() {
     if (tempRemovedEdge !== null) setEdges((old) => [...old, tempRemovedEdge]);
   };
 
+  const onNodeContextClick = (e: React.MouseEvent, node: Node) => {
+    console.log("onNodeContextClick:", node);
+    dispatch({ type: "SET_NODE", payload: { node } });
+  };
+
   return (
     <div style={{ height: 800 }}>
       <DragDropContext
@@ -139,6 +144,7 @@ function Flow() {
           attributionPosition="top-right"
           onEdgeClick={onClickEdge}
           onNodeClick={onClickNode}
+          onNodeContextMenu={onNodeContextClick}
           //onInit
         >
           <Background />

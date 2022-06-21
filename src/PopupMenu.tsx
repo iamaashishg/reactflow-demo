@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindContextMenu, bindMenu } from "material-ui-popup-state";
-import { Handle, Node, Position, useStoreApi } from "react-flow-renderer";
+import { Handle, Node, Position } from "react-flow-renderer";
 import { PopupState as PState } from "material-ui-popup-state/core";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "./store";
@@ -13,34 +13,16 @@ export default function MenuPopupState({ data }: any) {
   const dispatch = useDispatch();
   //const [nodes, setNodes] = useState(initialNodes);
   const nodes = useSelector((state: AppState) => state.nodes);
-  console.log("All nodes popmenu: ", nodes);
+  console.log("All nodes from block: ", nodes);
 
-  const getNodeId = () => `randomnode_${+new Date()}`;
-
-  const onDelete = () => {
-    dispatch({ type: "DELETE_NODE", payload: { id: data.id } });
-  };
+  const onDelete = useCallback(() => {
+    dispatch({ type: "DELETE_NODE" });
+  }, [dispatch]);
 
   const onDuplicate = useCallback(
     (popupState: PState) => {
-      console.log("in duplicate");
-      const newNode: Node = {
-        id: getNodeId(),
-        data: { label: "Duplicate node" },
-        position: {
-          x: Math.random() * window.innerWidth - 100,
-          y: Math.random() * window.innerHeight,
-        },
-      };
-      const sourceNode =
-        (nodes && nodes.find((n) => n.id === data.id)) || newNode;
-      let duplicateNode = JSON.parse(JSON.stringify(sourceNode));
-      duplicateNode.id = getNodeId();
-      duplicateNode.position = { x: 50, y: 20 };
-      const updatedNodes = nodes && nodes.concat(duplicateNode);
+      dispatch({ type: "DUPLICATE_NODE" });
       popupState.close();
-      console.log("updatedNodes:", updatedNodes);
-      dispatch({ type: "SET_NODES", payload: { updatedNodes } });
     },
     [dispatch]
   );
