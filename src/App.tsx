@@ -105,6 +105,10 @@ function Flow() {
     dispatch({ type: "SET_NODE", payload: { node } });
   };
 
+  const onNodeDragEnd = (e: React.MouseEvent, node: Node) => {
+    dispatch({ type: "SET_NODE_POSITION", payload: { node } });
+  };
+
   return (
     <div style={{ height: 800 }}>
       <DragDropContext
@@ -134,6 +138,7 @@ function Flow() {
           onEdgeClick={onClickEdge}
           onNodeClick={onClickNode}
           onNodeContextMenu={onNodeContextClick}
+          onNodeDragStop={onNodeDragEnd}
           //onInit
         >
           <Background />

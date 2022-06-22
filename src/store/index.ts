@@ -7,7 +7,7 @@ import edges2 from "../edges2";
 export interface AppState {
   nodes: Node[] | undefined;
   edges: Edge[] | undefined;
-  nodeId: string;
+  node: Node;
 }
 
 interface Item {
@@ -23,7 +23,14 @@ const reducerFn = (
   state: AppState = {
     nodes: nodes,
     edges: initialEdges,
-    nodeId: "",
+    node: {
+      id: "123",
+      position: {
+        x: 0,
+        y: 0,
+      },
+      data: {},
+    },
   },
   action: any
 ) => {
@@ -37,7 +44,7 @@ const reducerFn = (
     case "SET_NODE":
       return {
         ...state,
-        nodeId: payload.node.id,
+        node: payload.node,
       };
     case "SET_EDGES":
       return {
@@ -46,11 +53,23 @@ const reducerFn = (
       };
     case "DELETE_NODE":
       const updatedNodes =
-        state.nodes && state.nodes.filter((n) => n.id !== state.nodeId);
-      console.log("DELETE_NODE: ", updatedNodes);
+        state.nodes && state.nodes.filter((n) => n.id !== state.node.id);
       return {
         ...state,
         nodes: updatedNodes,
+      };
+    case "SET_NODE_POSITION":
+      const newNodes =
+        state.nodes &&
+        state.nodes.map((n, i) => {
+          if (n.id === payload.node.id) {
+            n.position = payload.node.position;
+          }
+          return n;
+        });
+      return {
+        ...state,
+        nodes: newNodes,
       };
 
     case "DUPLICATE_NODE":
@@ -63,14 +82,14 @@ const reducerFn = (
         },
       };
       const sourceNode: Node =
-        (state.nodes && state.nodes.find((n) => n.id === state.nodeId)) ||
+        (state.nodes && state.nodes.find((n) => n.id === state.node.id)) ||
         newNode;
       let duplicateNode: Node = JSON.parse(JSON.stringify(sourceNode));
       let nodeId = getNodeId();
       duplicateNode.id = nodeId;
       duplicateNode.position = {
-        x: sourceNode.position.x + 120,
-        y: sourceNode.position.y + 120,
+        x: sourceNode.position.x + 20,
+        y: sourceNode.position.y + 20,
       };
       duplicateNode.data.label = `${sourceNode.data.label} copy`;
       if (duplicateNode.data.kids && duplicateNode.data.kids.length) {
