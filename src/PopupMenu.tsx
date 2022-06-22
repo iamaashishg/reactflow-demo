@@ -13,7 +13,7 @@ export default function MenuPopupState({ data }: any) {
   const dispatch = useDispatch();
   //const [nodes, setNodes] = useState(initialNodes);
   const nodes = useSelector((state: AppState) => state.nodes);
-  console.log("All nodes from block: ", nodes);
+  // console.log("All nodes from block: ", nodes);
 
   const onDelete = useCallback(() => {
     dispatch({ type: "DELETE_NODE" });

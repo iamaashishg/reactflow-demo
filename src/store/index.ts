@@ -2,6 +2,7 @@ import { createStore } from "redux";
 import { Node, Edge } from "react-flow-renderer";
 import nodes from "../nodes";
 import initialEdges from "../edges";
+import edges2 from "../edges2";
 
 export interface AppState {
   nodes: Node[] | undefined;
@@ -79,7 +80,6 @@ const reducerFn = (
       };
 
     case "REARRANGE_KIDS_AFTER_DRAG":
-      // find the kids
       const {
         draggableId,
         srcIndex,
@@ -95,8 +95,6 @@ const reducerFn = (
         const copySrcKids = srcParentNode.data.kids;
         // splicing dragged kid from copySrcIndex at srcIndex
         const draggableKid = copySrcKids.splice(srcIndex, 1)[0];
-        console.log("draggableKid....");
-        console.log(draggableKid);
         srcParentNode.data.kids = copySrcKids;
 
         const destParentNodeIndex = state.nodes.findIndex(
@@ -112,9 +110,21 @@ const reducerFn = (
         copyNodes[srcParentNodeIndex] = srcParentNode;
         copyNodes[destParentNodeIndex] = destParentNode;
 
+        // removing the edges after drag
+        let copyEdges = state.edges;
+        if (state.edges) {
+          copyEdges = state.edges.filter(
+            (edge) => edge.sourceHandle !== draggableId
+          );
+        }
+
+        console.log("copy edges after drag...");
+        console.log(copyEdges);
+
         return {
           ...state,
           nodes: copyNodes,
+          edges: copyEdges,
         };
       }
       return state;

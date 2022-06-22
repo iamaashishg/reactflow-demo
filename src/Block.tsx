@@ -24,7 +24,6 @@ function BlockNode({ id, data }: any) {
   const updateNodeInternals = useUpdateNodeInternals();
   const dispatch = useDispatch();
   const nodes = useSelector((state: AppState) => state.nodes);
-  console.log("All nodes popmenu: ", nodes);
 
   const onDelete = useCallback(() => {
     dispatch({ type: "DELETE_NODE" });
