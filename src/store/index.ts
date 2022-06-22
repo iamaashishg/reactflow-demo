@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 export interface AppState {
   nodes: Node[] | undefined;
   edges: Edge[] | undefined;
-  nodeId: string;
+  node: Node;
 }
 
 interface Item {
@@ -15,7 +15,7 @@ interface Item {
   content: string;
 }
 
-const getNodeId = () => `randomnode_${+new Date()}`;
+const getNodeId = () => `random_${+new Date()}`;
 
 // keep the reducer synchronous
 // do not directly mutate the state
@@ -23,7 +23,14 @@ const reducerFn = (
   state: AppState = {
     nodes: nodes,
     edges: initialEdges,
-    nodeId: "",
+    node: {
+      id: "123",
+      position: {
+        x: 0,
+        y: 0,
+      },
+      data: {},
+    },
   },
   action: any
 ) => {
@@ -37,7 +44,7 @@ const reducerFn = (
     case "SET_NODE":
       return {
         ...state,
-        nodeId: payload.node.id,
+        node: payload.node,
       };
     case "SET_EDGES":
       return {
@@ -46,11 +53,23 @@ const reducerFn = (
       };
     case "DELETE_NODE":
       const updatedNodes =
-        state.nodes && state.nodes.filter((n) => n.id !== state.nodeId);
-      console.log("DELETE_NODE: ", updatedNodes);
+        state.nodes && state.nodes.filter((n) => n.id !== state.node.id);
       return {
         ...state,
         nodes: updatedNodes,
+      };
+    case "SET_NODE_POSITION":
+      const newNodes =
+        state.nodes &&
+        state.nodes.map((n, i) => {
+          if (n.id === payload.node.id) {
+            n.position = payload.node.position;
+          }
+          return n;
+        });
+      return {
+        ...state,
+        nodes: newNodes,
       };
 
     case "DUPLICATE_NODE":
@@ -62,16 +81,25 @@ const reducerFn = (
           y: Math.random() * window.innerHeight,
         },
       };
-      const sourceNode =
-        (state.nodes && state.nodes.find((n) => n.id === state.nodeId)) ||
+      const sourceNode: Node =
+        (state.nodes && state.nodes.find((n) => n.id === state.node.id)) ||
         newNode;
-      let duplicateNode = JSON.parse(JSON.stringify(sourceNode));
-      duplicateNode.id = getNodeId();
+      let duplicateNode: Node = JSON.parse(JSON.stringify(sourceNode));
+      let nodeId = getNodeId();
+      duplicateNode.id = nodeId;
       duplicateNode.position = {
         x: sourceNode.position.x + 20,
         y: sourceNode.position.y + 20,
       };
       duplicateNode.data.label = `${sourceNode.data.label} copy`;
+      if (duplicateNode.data.kids && duplicateNode.data.kids.length) {
+        duplicateNode.data.kids.forEach((kid: any, index: number) => {
+          let id = getNodeId();
+          kid.id = `${id}_${index}`;
+          kid.content = kid.id;
+        });
+      }
+
       const allNodes = state.nodes && state.nodes.concat([duplicateNode]);
       console.log("updatedNodes:", allNodes);
       return {
