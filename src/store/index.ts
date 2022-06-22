@@ -1,8 +1,8 @@
 import { createStore } from "redux";
-import { Node, Edge } from "react-flow-renderer";
+import { Node, Edge, Position } from "react-flow-renderer";
 import nodes from "../nodes";
 import initialEdges from "../edges";
-import edges2 from "../edges2";
+import { v4 as uuidv4 } from "uuid";
 
 export interface AppState {
   nodes: Node[] | undefined;
@@ -88,6 +88,10 @@ const reducerFn = (
         destinationDroppableId,
       } = payload;
       if (state.nodes) {
+        console.log("in store after drag result..");
+        console.log(destinationDroppableId);
+
+        /* source */
         const srcParentNodeIndex = state.nodes.findIndex(
           (node) => node.id === srcDroppableId
         );
@@ -97,6 +101,23 @@ const reducerFn = (
         const draggableKid = copySrcKids.splice(srcIndex, 1)[0];
         srcParentNode.data.kids = copySrcKids;
 
+        /* no destination */
+        //if dragged outside some parent node (out in workspace) - destinationDroppableId - undefined
+        if (!destinationDroppableId) {
+          // create a new parent node and add the child node to it
+          const newNodeId = uuidv4();
+          const newNode: Node = {
+            id: `n-${newNodeId}`,
+            type: "group",
+            position: { x: 0, y: 100 },
+            data: {
+              kids: [],
+            },
+          };
+          console.log(newNode);
+        }
+
+        /* destination */
         const destParentNodeIndex = state.nodes.findIndex(
           (node) => node.id === destinationDroppableId
         );
