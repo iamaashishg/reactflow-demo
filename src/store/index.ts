@@ -15,7 +15,7 @@ interface Item {
   content: string;
 }
 
-const getNodeId = () => `randomnode_${+new Date()}`;
+const getNodeId = () => `random_${+new Date()}`;
 
 // keep the reducer synchronous
 // do not directly mutate the state
@@ -62,16 +62,25 @@ const reducerFn = (
           y: Math.random() * window.innerHeight,
         },
       };
-      const sourceNode =
+      const sourceNode: Node =
         (state.nodes && state.nodes.find((n) => n.id === state.nodeId)) ||
         newNode;
-      let duplicateNode = JSON.parse(JSON.stringify(sourceNode));
-      duplicateNode.id = getNodeId();
+      let duplicateNode: Node = JSON.parse(JSON.stringify(sourceNode));
+      let nodeId = getNodeId();
+      duplicateNode.id = nodeId;
       duplicateNode.position = {
-        x: sourceNode.position.x + 20,
-        y: sourceNode.position.y + 20,
+        x: sourceNode.position.x + 120,
+        y: sourceNode.position.y + 120,
       };
       duplicateNode.data.label = `${sourceNode.data.label} copy`;
+      if (duplicateNode.data.kids && duplicateNode.data.kids.length) {
+        duplicateNode.data.kids.forEach((kid: any, index: number) => {
+          let id = getNodeId();
+          kid.id = `${id}_${index}`;
+          kid.content = kid.id;
+        });
+      }
+
       const allNodes = state.nodes && state.nodes.concat([duplicateNode]);
       console.log("updatedNodes:", allNodes);
       return {
