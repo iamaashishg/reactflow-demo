@@ -175,7 +175,7 @@ const reducerFn = (
           const newNode: Node = {
             id: `n-${newNodeId}`,
             type: "custom2",
-            position: { x: 0, y: 100 },
+            position: { x: -150, y: -50 },
             data: {
               kids: [draggableKid],
             },

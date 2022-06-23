@@ -106,6 +106,9 @@ function Flow() {
   };
 
   const onNodeDragEnd = (e: React.MouseEvent, node: Node) => {
+    console.log("node dragged...");
+    console.log(e);
+    console.log(node);
     dispatch({ type: "SET_NODE_POSITION", payload: { node } });
   };
 
