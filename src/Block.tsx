@@ -1,12 +1,7 @@
-import { useState, useCallback } from "react";
-import {
-  Handle,
-  Position,
-  useUpdateNodeInternals,
-  useReactFlow,
-} from "react-flow-renderer";
+import { useState, useCallback, useEffect } from "react";
+import { Handle, Position, useUpdateNodeInternals } from "react-flow-renderer";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import "./customNode.css";
 import PopupState, { bindContextMenu, bindMenu } from "material-ui-popup-state";
 import { PopupState as PState } from "material-ui-popup-state/core";
@@ -36,6 +31,22 @@ function BlockNode({ id, data }: any) {
     },
     [dispatch]
   );
+
+  const onDeleteChild = useCallback(
+    (id: string) => {
+      dispatch({ type: "DELETE_NODE", payload: { id } });
+    },
+    [dispatch]
+  );
+
+  const onDuplicateChild = useCallback(
+    (popupState: PState, id: string) => {
+      dispatch({ type: "DUPLICATE_NODE", payload: { id } });
+      popupState.close();
+    },
+    [dispatch]
+  );
+
   // const reactFlowInstance = useReactFlow();
 
   // console.log("reactFlowInstance....");
@@ -43,14 +54,29 @@ function BlockNode({ id, data }: any) {
   // console.log(reactFlowInstance.getEdges());
 
   const [localKids, setLocalKids] = useState(data.kids);
+  const [showMenu, setShowMenu] = useState(true);
   const [blockId] = useState(id);
+
+  const onContextClickChild = (e: any) => {
+    e.stopPropagation();
+    setShowMenu(false);
+  };
+
+  const onContextClickParent = () => {
+    setShowMenu(true);
+  };
+
+  useEffect(() => {
+    setLocalKids(data.kids);
+  }, [data.kids]);
+
   return (
     <>
       <Handle type="target" position={Position.Top} />
 
       <PopupState variant="popover" popupId="demo-popup-menu">
         {(popupState) => (
-          <>
+          <div onContextMenu={onContextClickParent}>
             <div className="text-updater-node" {...bindContextMenu(popupState)}>
               <Droppable droppableId={blockId} key={blockId}>
                 {(provided, snapshot) => {
@@ -91,7 +117,7 @@ function BlockNode({ id, data }: any) {
                                   popupId="demo-popup-menu-child"
                                 >
                                   {(popupStateChild) => (
-                                    <>
+                                    <div onContextMenu={onContextClickChild}>
                                       <div
                                         {...provided.draggableProps}
                                         ref={provided.innerRef}
@@ -137,16 +163,21 @@ function BlockNode({ id, data }: any) {
                                       <Menu {...bindMenu(popupStateChild)}>
                                         <MenuItem
                                           onClick={() =>
-                                            onDuplicate(popupStateChild)
+                                            onDuplicateChild(
+                                              popupStateChild,
+                                              kid.id
+                                            )
                                           }
                                         >
                                           Duplicate
                                         </MenuItem>
-                                        <MenuItem onClick={onDelete}>
+                                        <MenuItem
+                                          onClick={() => onDeleteChild(kid.id)}
+                                        >
                                           Delete
                                         </MenuItem>
                                       </Menu>
-                                    </>
+                                    </div>
                                   )}
                                 </PopupState>
                               );
@@ -171,13 +202,16 @@ function BlockNode({ id, data }: any) {
                 Update Node Internals
               </button>
             </div>
-            <Menu {...bindMenu(popupState)}>
+            <Menu
+              {...bindMenu(popupState)}
+              open={showMenu && popupState.isOpen}
+            >
               <MenuItem onClick={() => onDuplicate(popupState)}>
                 Duplicate
               </MenuItem>
               <MenuItem onClick={onDelete}>Delete</MenuItem>
             </Menu>
-          </>
+          </div>
         )}
       </PopupState>
       <Handle
