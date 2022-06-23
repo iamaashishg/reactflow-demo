@@ -136,11 +136,17 @@ const reducerFn = (
           const newNodeId = uuidv4();
           const newNode: Node = {
             id: `n-${newNodeId}`,
-            type: "group",
+            type: "custom2",
             position: { x: 0, y: 100 },
             data: {
-              kids: [],
+              kids: [draggableKid],
             },
+          };
+          // adding new node to the store
+          const allNodes = [...state.nodes, newNode];
+          return {
+            ...state,
+            nodes: allNodes,
           };
           console.log(newNode);
         }
@@ -159,9 +165,9 @@ const reducerFn = (
         copyNodes[srcParentNodeIndex] = srcParentNode;
         copyNodes[destParentNodeIndex] = destParentNode;
 
-        // removing the edges after drag
+        // removing the edges after drag if srcDroppableId != destinationDroppableId
         let copyEdges = state.edges;
-        if (state.edges) {
+        if (state.edges && srcDroppableId !== destinationDroppableId) {
           copyEdges = state.edges.filter(
             (edge) => edge.sourceHandle !== draggableId
           );
