@@ -52,8 +52,23 @@ const reducerFn = (
         edges: payload,
       };
     case "DELETE_NODE":
-      const updatedNodes =
-        state.nodes && state.nodes.filter((n) => n.id !== state.node.id);
+      let updatedNodes: Node[] | undefined = [];
+      if (payload?.id) {
+        updatedNodes =
+          state.nodes &&
+          state.nodes.map((n) => {
+            if (n.data.kids && n.data.kids.length) {
+              const filteredArray = n.data.kids.filter(
+                (kid: any) => kid.id !== payload.id
+              );
+              n.data.kids = filteredArray;
+            }
+            return n;
+          });
+      } else {
+        updatedNodes =
+          state.nodes && state.nodes.filter((n) => n.id !== state.node.id);
+      }
       return {
         ...state,
         nodes: updatedNodes,
@@ -81,27 +96,50 @@ const reducerFn = (
           y: Math.random() * window.innerHeight,
         },
       };
-      const sourceNode: Node =
-        (state.nodes && state.nodes.find((n) => n.id === state.node.id)) ||
-        newNode;
-      let duplicateNode: Node = JSON.parse(JSON.stringify(sourceNode));
-      let nodeId = getNodeId();
-      duplicateNode.id = nodeId;
-      duplicateNode.position = {
-        x: sourceNode.position.x + 20,
-        y: sourceNode.position.y + 20,
-      };
-      duplicateNode.data.label = `${sourceNode.data.label} copy`;
-      if (duplicateNode.data.kids && duplicateNode.data.kids.length) {
-        duplicateNode.data.kids.forEach((kid: any, index: number) => {
-          let id = getNodeId();
-          kid.id = `${id}_${index}`;
-          kid.content = kid.id;
-        });
-      }
+      let sourceNode: Node;
+      let duplicateChild: any;
+      let childNode: any | undefined;
+      let allNodes: Node[] | undefined;
 
-      const allNodes = state.nodes && state.nodes.concat([duplicateNode]);
-      console.log("updatedNodes:", allNodes);
+      let nodeId = getNodeId();
+      if (payload?.id) {
+        allNodes =
+          state.nodes &&
+          state.nodes.map((n) => {
+            if (n.data.kids && n.data.kids.length) {
+              childNode = n.data.kids.find((kid: any) => kid.id === payload.id);
+              if (childNode) {
+                sourceNode = JSON.parse(JSON.stringify(n));
+                duplicateChild = JSON.parse(JSON.stringify(childNode));
+                duplicateChild.id = nodeId;
+                duplicateChild.content = `${childNode.content} copy`;
+                let newArr = sourceNode.data.kids.concat([duplicateChild]);
+                n.data.kids = newArr;
+              }
+            }
+            return n;
+          });
+      } else {
+        sourceNode =
+          (state.nodes && state.nodes.find((n) => n.id === state.node.id)) ||
+          newNode;
+        let duplicateNode: Node = JSON.parse(JSON.stringify(sourceNode));
+        duplicateNode.id = nodeId;
+        duplicateNode.position = {
+          x: sourceNode.position.x + 20,
+          y: sourceNode.position.y + 20,
+        };
+        duplicateNode.data.label = `${sourceNode.data.label} copy`;
+        if (duplicateNode.data.kids && duplicateNode.data.kids.length) {
+          duplicateNode.data.kids.forEach((kid: any, index: number) => {
+            let id = getNodeId();
+            kid.id = `${id}_${index}`;
+            kid.content = `${kid.content} copy`;
+          });
+        }
+        allNodes = state.nodes && state.nodes.concat([duplicateNode]);
+      }
+      // console.log("updatedNodes:", allNodes);
       return {
         ...state,
         nodes: allNodes,
