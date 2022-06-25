@@ -1,4 +1,5 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { Node, Edge, Position } from "react-flow-renderer";
 import nodes from "../nodes";
 import initialEdges from "../edges";
@@ -65,10 +66,20 @@ const reducerFn = (
             }
             return n;
           });
+
+        // this filter should be another action when using a middleware
+        // remove all the parent nodes with kids array empty
+        // do not touch parent nodes where data has no kids defined (not custom nodes)
+        updatedNodes = updatedNodes?.filter((n) => {
+          if (n.data.kids) {
+            return n.data.kids.length > 0;
+          } else return true;
+        });
       } else {
         updatedNodes =
           state.nodes && state.nodes.filter((n) => n.id !== state.node.id);
       }
+
       return {
         ...state,
         nodes: updatedNodes,
@@ -181,12 +192,21 @@ const reducerFn = (
             },
           };
           // adding new node to the store
-          const allNodes = [...state.nodes, newNode];
+          let allNodes = [...state.nodes, newNode];
+
+          // this filter should be another action when using a middleware
+          // remove all the parent nodes with kids array empty
+          // do not touch parent nodes where data has no kids defined (not custom nodes)
+          allNodes = allNodes?.filter((n) => {
+            if (n.data.kids) {
+              return n.data.kids.length > 0;
+            } else return true;
+          });
+
           return {
             ...state,
             nodes: allNodes,
           };
-          console.log(newNode);
         }
 
         /* destination */
@@ -199,7 +219,7 @@ const reducerFn = (
         copyDestKids.splice(destIndex, 0, draggableKid);
         destParentNode.data.kids = copyDestKids;
 
-        const copyNodes = [...state.nodes];
+        let copyNodes = [...state.nodes];
         copyNodes[srcParentNodeIndex] = srcParentNode;
         copyNodes[destParentNodeIndex] = destParentNode;
 
@@ -211,8 +231,14 @@ const reducerFn = (
           );
         }
 
-        console.log("copy edges after drag...");
-        console.log(copyEdges);
+        // this filter should be another action when using a middleware
+        // remove all the parent nodes with kids array empty
+        // do not touch parent nodes where data has no kids defined (not custom nodes)
+        copyNodes = copyNodes?.filter((n) => {
+          if (n.data.kids) {
+            return n.data.kids.length > 0;
+          } else return true;
+        });
 
         return {
           ...state,
@@ -227,6 +253,6 @@ const reducerFn = (
   }
 };
 
-const store = createStore(reducerFn);
+const store = createStore(reducerFn, applyMiddleware(thunk));
 
 export default store;
