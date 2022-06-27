@@ -20,6 +20,10 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import { CardHeader, IconButton } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 
 interface Item {
   id: string;
@@ -30,14 +34,24 @@ function BlockNode({ id, data }: any) {
   const updateNodeInternals = useUpdateNodeInternals();
   const dispatch = useDispatch();
 
-  const onActionButtonClick = (popState: PState) => {
-    popState.close();
+  const onActionButtonClick = () => {
+    console.log("on Action click");
   };
-
-  const card = (popState: PState) => {
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+  const cardContent = () => {
     return (
-      <React.Fragment>
-        <CardContent>
+      <>
+        <CardContent style={{ paddingTop: "0px" }}>
           <Typography variant="h5" component="div">
             Header
           </Typography>
@@ -51,10 +65,32 @@ function BlockNode({ id, data }: any) {
           <Typography variant="body2">content goes here...</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={() => onActionButtonClick(popState)}>
+          <Button size="small" onClick={() => onActionButtonClick()}>
             Action Button
           </Button>
         </CardActions>
+      </>
+    );
+  };
+
+  const card = (popState: PState) => {
+    return (
+      <React.Fragment>
+        <CardHeader
+          action={
+            <IconButton
+              aria-label="open modal"
+              onClick={() => {
+                popState.close();
+                handleOpen();
+              }}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          }
+          style={{ paddingBottom: "0px" }}
+        />
+        {cardContent()}
       </React.Fragment>
     );
   };
@@ -95,6 +131,9 @@ function BlockNode({ id, data }: any) {
   const [localKids, setLocalKids] = useState(data.kids);
   const [showMenu, setShowMenu] = useState(true);
   const [blockId] = useState(id);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const onContextClickChild = (e: any) => {
     e.stopPropagation();
@@ -299,6 +338,14 @@ function BlockNode({ id, data }: any) {
         //   border: "none",
         // }}
       />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}> {cardContent()}</Box>
+      </Modal>
     </>
   );
 }
