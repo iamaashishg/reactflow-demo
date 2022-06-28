@@ -109,6 +109,7 @@ function Flow() {
     console.log("node dragged...");
     console.log(e);
     console.log(node);
+    dispatch({ type: "REARRANGE_NODE_AFTER_DRAG", payload: { node } });
     dispatch({ type: "SET_NODE_POSITION", payload: { node } });
   };
 

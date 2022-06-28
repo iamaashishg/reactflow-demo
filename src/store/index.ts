@@ -156,6 +156,20 @@ const reducerFn = (
         nodes: allNodes,
       };
 
+    case "REARRANGE_NODE_AFTER_DRAG":
+      const nodeIndex = state.nodes?.findIndex(
+        (node) => node.id === payload.node.id
+      );
+      const newUpdatedNodes = state.nodes?.concat(
+        state.nodes?.splice(nodeIndex || -1, 1)[0]
+      );
+      console.log("newUpdatedNodes: ", newUpdatedNodes);
+
+      return {
+        ...state,
+        nodes: newUpdatedNodes,
+      };
+
     case "REARRANGE_KIDS_AFTER_DRAG":
       const {
         draggableId,
