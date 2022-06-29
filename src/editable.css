@@ -1,0 +1,25 @@
+.container {
+  display: "flex";
+  flex-wrap: "wrap";
+}
+.textField {
+  margin-left: 10;
+  margin-right: 10;
+  color: "black";
+  font-size: 20;
+  opacity: 1;
+  border: none;
+}
+/* .textField:before {
+  border-bottom: none;
+} */
+.disabled {
+  color: "black";
+  /* border-bottom: 0; */
+}
+/* .disabled:before {
+  border-bottom: 0;
+} */
+.input {
+  padding: 0px;
+}

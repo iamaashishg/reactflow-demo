@@ -24,6 +24,7 @@ import { CardHeader, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import EditableTextField from "./EditableField";
 
 interface Item {
   id: string;
@@ -156,6 +157,7 @@ function BlockNode({ id, data }: any) {
         {(popupState) => (
           <div onContextMenu={onContextClickParent}>
             <div className="text-updater-node" {...bindContextMenu(popupState)}>
+              <EditableTextField value="Block Title" />
               <Droppable droppableId={blockId} key={blockId}>
                 {(provided, snapshot) => {
                   return (
