@@ -5,7 +5,7 @@ const nodes: Node[] = [
     id: "A1",
     type: "group",
     data: { label: null },
-    position: { x: -180, y: -120 },
+    position: { x: 180, y: 0 },
     style: {
       width: 200,
       height: 50,
@@ -24,7 +24,7 @@ const nodes: Node[] = [
     id: "A",
     type: "group",
     data: { label: null },
-    position: { x: 200, y: 80 },
+    position: { x: 200, y: 350 },
     sourcePosition: Position.Top,
     targetPosition: Position.Bottom,
     style: {
@@ -54,7 +54,7 @@ const nodes: Node[] = [
         },
       ],
     },
-    position: { x: -50, y: -30 },
+    position: { x: 50, y: 100 },
     style: {
       width: 170,
       // height: 100,
@@ -82,7 +82,7 @@ const nodes: Node[] = [
         },
       ],
     },
-    position: { x: -50, y: 90 },
+    position: { x: 50, y: 250 },
     style: {
       width: 170,
       // height: 100,
@@ -93,7 +93,7 @@ const nodes: Node[] = [
     id: "B",
     type: "output",
     data: { label: "X1" },
-    position: { x: 10, y: 20 },
+    position: { x: 100, y: 20 },
     parentNode: "A",
     extent: "parent",
     style: {
@@ -105,7 +105,7 @@ const nodes: Node[] = [
     id: "F",
     type: "input",
     data: { label: "X2" },
-    position: { x: 10, y: 60 },
+    position: { x: 100, y: 60 },
     parentNode: "A",
     extent: "parent",
     style: {
@@ -117,7 +117,7 @@ const nodes: Node[] = [
     id: "H",
     type: "testOne",
     data: { label: "Test menu", id: "H" },
-    position: { x: 90, y: 30 },
+    position: { x: 170, y: 30 },
     parentNode: "A",
     extent: "parent",
     // style: {
@@ -140,7 +140,7 @@ const nodes: Node[] = [
     type: "output",
     targetPosition: Position.Left,
     data: { label: "End Node" },
-    position: { x: 200, y: 280 },
+    position: { x: 250, y: 580 },
     // parentNode: "G",
     // extent: "parent",
     style: {
@@ -205,7 +205,7 @@ const nodes: Node[] = [
     id: "T0",
     type: "test",
     data: { label: "Test Node 0" },
-    position: { x: 25, y: 160 },
+    position: { x: 525, y: 160 },
     style: {
       fontSize: 8,
       border: "1px solid blue",

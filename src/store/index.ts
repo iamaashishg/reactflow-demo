@@ -163,6 +163,7 @@ const reducerFn = (
         destIndex,
         srcDroppableId,
         destinationDroppableId,
+        positionAfterDrag,
       } = payload;
       if (state.nodes) {
         console.log("in store after drag result..");
@@ -186,7 +187,10 @@ const reducerFn = (
           const newNode: Node = {
             id: `n-${newNodeId}`,
             type: "custom2",
-            position: { x: -150, y: -50 },
+            position: {
+              x: Math.abs(positionAfterDrag.x - srcParentNode.position.x),
+              y: Math.abs(positionAfterDrag.y - srcParentNode.position.y),
+            },
             data: {
               kids: [draggableKid],
             },

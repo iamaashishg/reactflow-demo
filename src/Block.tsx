@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Handle, Position, useUpdateNodeInternals } from "react-flow-renderer";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 // import { v4 as uuidv4 } from "uuid";
@@ -176,7 +176,7 @@ function BlockNode({ id, data }: any) {
                             draggableId={kid.id}
                             index={index}
                           >
-                            {(provided, snapshot) => {
+                            {(provided, snapshot, n) => {
                               // Restrict dragging to vertical axis
                               let transform = undefined;
                               if (
@@ -204,7 +204,22 @@ function BlockNode({ id, data }: any) {
                                           <>
                                             <div
                                               {...provided.draggableProps}
-                                              ref={provided.innerRef}
+                                              ref={(el: HTMLDivElement) => {
+                                                provided.innerRef(el);
+                                                //setDraggableRefs(el);
+                                                if (el && snapshot.isDragging) {
+                                                  const pos =
+                                                    el.getBoundingClientRect();
+                                                  localStorage.setItem(
+                                                    "lastDraggedChildPosX",
+                                                    pos.x.toString()
+                                                  );
+                                                  localStorage.setItem(
+                                                    "lastDraggedChildPosY",
+                                                    pos.y.toString()
+                                                  );
+                                                }
+                                              }}
                                               className="nodrag"
                                               style={{
                                                 ...provided.draggableProps
@@ -227,6 +242,9 @@ function BlockNode({ id, data }: any) {
                                               {...bindTrigger(popupStatePop)}
                                             >
                                               <div
+                                                ref={(el: HTMLDivElement) => {
+                                                  //setDraggableRefs(el);
+                                                }}
                                                 style={{
                                                   position: "relative",
                                                 }}

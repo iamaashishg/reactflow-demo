@@ -27,6 +27,7 @@ import TestNode from "./TestNode";
 import "./App.css";
 import TestNodeOne from "./PopupMenu";
 import { NodeData } from "./NodeData";
+import { endianness } from "os";
 
 type TestNodeOne = Node<NodeData>;
 interface Item {
@@ -106,9 +107,6 @@ function Flow() {
   };
 
   const onNodeDragEnd = (e: React.MouseEvent, node: Node) => {
-    console.log("node dragged...");
-    console.log(e);
-    console.log(node);
     dispatch({ type: "SET_NODE_POSITION", payload: { node } });
   };
 
@@ -116,8 +114,11 @@ function Flow() {
     <div style={{ height: 800 }}>
       <DragDropContext
         onDragEnd={(result) => {
-          console.log("after drag result...");
-          console.log(result);
+          const posX = localStorage.getItem("lastDraggedChildPosX");
+          const posY = localStorage.getItem("lastDraggedChildPosY");
+          /*const el = document.querySelector(
+            `[data-rbd-draggable-id=${result.draggableId}]`
+          );*/
           dispatch({
             type: "REARRANGE_KIDS_AFTER_DRAG",
             payload: {
@@ -126,6 +127,7 @@ function Flow() {
               srcDroppableId: result.source.droppableId,
               destIndex: result.destination?.index,
               destinationDroppableId: result.destination?.droppableId,
+              positionAfterDrag: { x: posX, y: posY },
             },
           });
         }}
