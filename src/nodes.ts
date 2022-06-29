@@ -152,6 +152,17 @@ const nodes: Node[] = [
     //   target: null,
     // },
   },
+  {
+    id: "C1",
+    type: "output",
+    targetPosition: Position.Top,
+    data: { label: "Custom A" },
+    position: { x: 50, y: 280 },
+    style: {
+      width: 100,
+      height: 50,
+    },
+  },
   // {
   //   id: "id10",
   //   type: "custom",
@@ -209,6 +220,7 @@ const nodes: Node[] = [
     style: {
       fontSize: 8,
       border: "1px solid blue",
+      background: "#fff",
     },
   },
 ];
