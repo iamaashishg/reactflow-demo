@@ -107,6 +107,7 @@ function Flow() {
   };
 
   const onNodeDragEnd = (e: React.MouseEvent, node: Node) => {
+    dispatch({ type: "REARRANGE_NODE_AFTER_DRAG", payload: { node } });
     dispatch({ type: "SET_NODE_POSITION", payload: { node } });
   };
 
