@@ -149,6 +149,13 @@ function BlockNode({ id, data }: any) {
     setLocalKids(data.kids);
   }, [data.kids]);
 
+  const onUpdateTitle = useCallback(
+    (title: string) => {
+      dispatch({ type: "SET_NODE_TITLE", payload: { id, title } });
+    },
+    [dispatch]
+  );
+
   return (
     <>
       <Handle type="target" position={Position.Top} />
@@ -157,7 +164,10 @@ function BlockNode({ id, data }: any) {
         {(popupState) => (
           <div onContextMenu={onContextClickParent}>
             <div className="text-updater-node" {...bindContextMenu(popupState)}>
-              <EditableTextField value="Block Title" />
+              <EditableTextField
+                value={data.label}
+                updateTitle={onUpdateTitle}
+              />
               <Droppable droppableId={blockId} key={blockId}>
                 {(provided, snapshot) => {
                   return (

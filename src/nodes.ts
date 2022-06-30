@@ -37,7 +37,7 @@ const nodes: Node[] = [
     id: "E",
     type: "custom",
     data: {
-      label: "Block",
+      label: "Block One",
       // duplicate info
       kids: [
         {
@@ -65,7 +65,7 @@ const nodes: Node[] = [
     id: "E2",
     type: "custom2",
     data: {
-      label: "Block2",
+      label: "Block Two",
       // duplicate info
       kids: [
         {

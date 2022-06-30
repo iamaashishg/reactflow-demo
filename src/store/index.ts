@@ -97,7 +97,19 @@ const reducerFn = (
         ...state,
         nodes: newNodes,
       };
-
+    case "SET_NODE_TITLE":
+      const newNodesWithTitle =
+        state.nodes &&
+        state.nodes.map((n, i) => {
+          if (n.id === payload.id) {
+            n.data.label = payload.title;
+          }
+          return n;
+        });
+      return {
+        ...state,
+        nodes: newNodesWithTitle,
+      };
     case "DUPLICATE_NODE":
       const newNode: Node = {
         id: getNodeId(),

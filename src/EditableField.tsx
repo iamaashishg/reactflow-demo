@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Edit from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import { useDispatch } from "react-redux";
 import "./editable.css";
 
-const EditableTextField = ({ value }: any) => {
+const EditableTextField = (props: any) => {
+  const { value, updateTitle } = props;
+  const dispatch = useDispatch();
   const [title, setTitle] = useState(value);
   const [editMode, setEditMode] = useState(false);
   const [mouseOver, setMouseOver] = useState(false);
@@ -13,6 +16,10 @@ const EditableTextField = ({ value }: any) => {
   const handleChange = (event: any) => {
     setTitle(event.target.value);
   };
+
+  useEffect(() => {
+    updateTitle(title);
+  }, [dispatch, title]);
 
   const handleMouseOver = (event: any) => {
     if (!mouseOver) {
@@ -64,3 +71,6 @@ const EditableTextField = ({ value }: any) => {
 };
 
 export default EditableTextField;
+function updateTitle(title: any) {
+  throw new Error("Function not implemented.");
+}
