@@ -6,7 +6,7 @@ export default [
     source: "Z1",
     target: "Z2",
     markerEnd: {
-      type: MarkerType.Arrow,
+      type: MarkerType.ArrowClosed,
     },
   },
 ];
