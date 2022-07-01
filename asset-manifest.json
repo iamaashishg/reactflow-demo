@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/reactflow-demo/static/css/main.bdd7c253.css",
+    "main.js": "/reactflow-demo/static/js/main.3f9c510e.js",
+    "static/js/787.2c8f93f1.chunk.js": "/reactflow-demo/static/js/787.2c8f93f1.chunk.js",
+    "index.html": "/reactflow-demo/index.html",
+    "main.bdd7c253.css.map": "/reactflow-demo/static/css/main.bdd7c253.css.map",
+    "main.3f9c510e.js.map": "/reactflow-demo/static/js/main.3f9c510e.js.map",
+    "787.2c8f93f1.chunk.js.map": "/reactflow-demo/static/js/787.2c8f93f1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bdd7c253.css",
+    "static/js/main.3f9c510e.js"
+  ]
+}
